@@ -1,0 +1,30 @@
+# docker-compose.yml
+version: '3'
+services:
+   db:
+     build:
+        context: ./
+        dockerfile: Dockerfile-db 
+     environment:
+        MYSQL_HOSTNAME: sysadmin-db
+        MYSQL_ROOT_PASSWORD: sysadmin-db-rootpw
+        MYSQL_DATABASE: ipums
+        MYSQL_USER: ipums
+        MYSQL_PASSWORD: sysadmin-exercise
+     restart: always
+     hostname: sysadmin-db
+     network_mode: host
+     ports:
+        - 3306:3306
+
+   web:
+     build:
+        context: ./
+        dockerfile: Dockerfile-web
+     depends_on:
+        - db
+     restart: always
+     network_mode: host
+     ports:
+        - 80:80
+
